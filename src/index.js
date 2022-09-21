@@ -1,7 +1,6 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
 import API from './fetchCountries';
-// import debounce from 'lodash.debounce';
 const debounce = require('lodash.debounce');
 
 const DEBOUNCE_DELAY = 300;
@@ -19,7 +18,10 @@ function fetchCountries(name) {
   const inputValue = name.target.value.trim();
   console.log(inputValue);
 
-  API.fetchCountry(inputValue).then(renderCountryCard).catch(onFetchError);
+  API.fetchCountry(inputValue)
+
+    .then(renderCountryCard)
+    .catch(onFetchError);
 }
 
 //   /Render page
@@ -67,14 +69,7 @@ function renderCountryCard(countries) {
     countryInfoEl.innerHTML = markUp;
   }
 }
-// !Разобраться с ошибкой
 //   /Error
-function onFetchError(nameCountry) {
-  const url = `https://restcountries.com/v3.1/name/${nameCountry}`;
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      Notiflix.Notify.failure('Oops, there is no country with that name');
-    }
-  });
+function onFetchError() {
+  Notiflix.Notify.failure('Oops, there is no country with that name');
 }
-// onFetchError(213);
