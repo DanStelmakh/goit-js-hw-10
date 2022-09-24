@@ -2,7 +2,7 @@ import './css/styles.css';
 import Notiflix from 'notiflix';
 import API from './fetchCountries';
 const debounce = require('lodash.debounce');
-
+let countries = null;
 const DEBOUNCE_DELAY = 300;
 
 // / Элементы html
@@ -34,8 +34,12 @@ function renderCountryCard(countries) {
       'Too many matches found. Please enter a more specific name.'
     );
   }
-  renderSmallList();
-  renderBigCard();
+  if (countries.length >= 2 && countries.length <= 10) {
+    renderSmallList();
+  }
+  if (countries.length === 1) {
+    renderBigCard();
+  }
 }
 //   /Error
 function onFetchError() {
@@ -43,28 +47,26 @@ function onFetchError() {
 }
 
 function renderSmallList() {
-  if (countries.length >= 2 && countries.length <= 10) {
-    const list = countries
-      .map(
-        ({ flags, name }) => `
+  const list = countries
+    .map(
+      ({ flags, name }) => `
        <li class="country__item">
        <img src="${flags.svg}" alt="${name.official}" width = "50" height ="20" />
        <p class="country__title">${name.official}</p>
      </li>`
-      )
-      .join('');
-    listEl.innerHTML = list;
-  }
+    )
+    .join('');
+  listEl.innerHTML = list;
 }
+
 function renderBigCard() {
-  if (countries.length === 1) {
-    const markUp = countries
-      .map(
-        ({ flags, name, capital, population, languages }) => `
+  const markUp = countries
+    .map(
+      ({ flags, name, capital, population, languages }) => `
        <div class="block">
           <img class="flag" src="${flags.svg}" alt="${
-          name.official
-        }" width="100" />
+        name.official
+      }" width="100" />
           <h2 class="country-name">${name.official}</h2>
        </div>
        <ul class="country-card">
@@ -74,8 +76,7 @@ function renderBigCard() {
             languages
           )}</li>
        </ul> `
-      )
-      .join('');
-    countryInfoEl.innerHTML = markUp;
-  }
+    )
+    .join('');
+  countryInfoEl.innerHTML = markUp;
 }
