@@ -35,19 +35,20 @@ function renderCountryCard(countries) {
     );
   }
   if (countries.length >= 2 && countries.length <= 10) {
-    renderSmallList();
+    renderSmallList(countries);
   }
   if (countries.length === 1) {
-    renderBigCard();
+    renderBigCard(countries);
   }
 }
 //   /Error
-function onFetchError() {
+function onFetchError(error) {
   Notiflix.Notify.failure('Oops, there is no country with that name');
 }
 
-function renderSmallList() {
-  const list = countries
+function renderSmallList(data) {
+  console.log(data);
+  const list = data
     .map(
       ({ flags, name }) => `
        <li class="country__item">
@@ -59,8 +60,8 @@ function renderSmallList() {
   listEl.innerHTML = list;
 }
 
-function renderBigCard() {
-  const markUp = countries
+function renderBigCard(data) {
+  const markUp = data
     .map(
       ({ flags, name, capital, population, languages }) => `
        <div class="block">
